@@ -42,7 +42,7 @@ class Score {
   }
 
   getItem(itemId) {
-    sendEvent(102, { itemId });
+    sendEvent(102, { itemId, currentStage: this.currentStageId });
   }
 
   reset() {

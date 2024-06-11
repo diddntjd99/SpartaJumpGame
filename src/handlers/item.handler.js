@@ -23,8 +23,11 @@ export const acquiredItemHandler = (userId, payload) => {
   if (!userGetItem === undefined) {
     return { status: 'fail', message: 'No Items found for user' };
   }
+  const { items, itemUnlocks } = getGameAssets();
 
-  const { items } = getGameAssets();
+  if (!itemUnlocks.data.some((item) => item.stage_id === payload.currentStage)) {
+    return { status: 'fail', message: 'Item current Stage mismatch' };
+  }
 
   const item = items.data.find((item) => item.id === payload.itemId);
   if (!item) {
