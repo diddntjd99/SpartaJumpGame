@@ -25,7 +25,7 @@ export const acquiredItemHandler = (userId, payload) => {
   }
   const { items, itemUnlocks } = getGameAssets();
 
-  if (!itemUnlocks.data.some((item) => item.stage_id === payload.currentStage)) {
+  if (!itemUnlocks.data.some((unlock) => unlock.stage_id === payload.currentStage)) {
     return { status: 'fail', message: 'Item current Stage mismatch' };
   }
 
