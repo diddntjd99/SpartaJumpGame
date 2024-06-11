@@ -8,6 +8,7 @@ class ItemController {
 
   nextInterval = null;
   items = [];
+  itemIds = [];
 
   constructor(ctx, itemImages, scaleRatio, speed) {
     this.ctx = ctx;
@@ -24,17 +25,22 @@ class ItemController {
     this.nextInterval = this.getRandomNumber(this.INTERVAL_MIN, this.INTERVAL_MAX);
   }
 
+  setItemIds(itemIds) {
+    this.itemIds = itemIds;
+  }
+
+  getRandomItemIndex() {
+    let index = this.itemIds[Math.floor(Math.random() * this.itemIds.length)];
+    return index - 1;
+  }
+
   getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   createItem() {
     // 스테이지에 따라 아이템이 생성, 수정
-    const currentStageId = getScoreVeriable().currentStageId;
-    sendEvent(101, { currentStageId });
-
-    const index = this.getRandomNumber(0, this.itemImages.length - 1);
-    const itemInfo = this.itemImages[index];
+    const itemInfo = this.itemImages[this.getRandomItemIndex()];
     const x = this.canvas.width * 1.5;
     const y = this.getRandomNumber(10, this.canvas.height - itemInfo.height);
 

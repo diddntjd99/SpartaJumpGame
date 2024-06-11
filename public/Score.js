@@ -37,6 +37,8 @@ class Score {
       this.nextStageScore = nextStage.score;
       this.changeStage = true;
     }
+
+    sendEvent(101, { currentStageId: this.currentStageId });
   }
 
   getItem(itemId) {
