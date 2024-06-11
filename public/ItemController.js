@@ -1,6 +1,4 @@
 import Item from './Item.js';
-import { sendEvent } from './Socket.js';
-import { getScoreVeriable } from './index.js';
 
 class ItemController {
   INTERVAL_MIN = 0;
