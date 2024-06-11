@@ -41,7 +41,7 @@ export const moveStageHandler = (userId, payload) => {
   return {
     status: 'success',
     message: 'Move Stage',
-    handlerId: 110,
+    handlerId: 10,
     currentStage: stages.data[index],
     nextStage: index + 1 < stages.data.length ? stages.data[index + 1] : -1,
   };
@@ -60,7 +60,7 @@ export const getCurrentStageInfo = (userId, payload) => {
     return {
       ststus: 'success',
       message: 'Check Current Stage',
-      handlerId: 110,
+      handlerId: 10,
       currentStage: stages.data[index],
       nextStage: stages.data[index + 1],
     };

@@ -40,6 +40,7 @@ class Score {
   }
 
   getItem(itemId) {
+    console.log('!!!!!!!!', itemId);
     this.score += 0;
   }
 

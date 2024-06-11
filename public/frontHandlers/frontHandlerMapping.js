@@ -1,7 +1,7 @@
 import { updateScore } from './front.handler.js';
 
 const frontHandlerMappings = {
-  110: updateScore,
+  10: updateScore,
 };
 
 export default frontHandlerMappings;
