@@ -23,7 +23,7 @@ class Score {
     }
     this.score += deltaTime * 0.001 * this.scorePerSecond;
     // 점수가 100점 이상이 될 시 서버에 메세지 전송
-    if (Math.floor(this.score) === this.nextStageScore && this.changeStage) {
+    if (Math.floor(this.score) >= this.nextStageScore && this.changeStage) {
       this.changeStage = false;
       sendEvent(11, { currentStage: this.currentStageId, targetStage: this.nextStageId });
     }
@@ -42,8 +42,7 @@ class Score {
   }
 
   getItem(itemId) {
-    console.log('!!!!!!!!', itemId);
-    this.score += 0;
+    sendEvent(102, { itemId });
   }
 
   reset() {
@@ -60,6 +59,10 @@ class Score {
 
   getScore() {
     return this.score;
+  }
+
+  plusScore(score) {
+    this.score += score;
   }
 
   draw() {

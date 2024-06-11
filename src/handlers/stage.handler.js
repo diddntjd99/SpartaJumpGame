@@ -47,8 +47,13 @@ export const moveStageHandler = (userId, payload) => {
   };
 };
 
-export const getCurrentStageInfo = (userId, payload) => {
+// 현재 스테이지에 대한 정보 및 다음 스테이지 정보를 리턴해주는 핸들러
+export const getCurrentStageHandler = (userId, payload) => {
   let currentStages = getStage(userId);
+  if (!currentStages.length) {
+    return { status: 'fail', message: 'No stages found for user' };
+  }
+
   currentStages.sort((a, b) => a.id - b.id);
   const currentStage = currentStages[currentStages.length - 1];
 

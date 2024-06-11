@@ -1,4 +1,5 @@
 import { CLIENT_VERSION } from '../constants.js';
+import { createItems } from '../models/item.model.js';
 import { createStage } from '../models/stage.model.js';
 import { getUser, removeUser } from '../models/user.model.js';
 import handlerMappings from './handlerMapping.js';
@@ -15,6 +16,7 @@ export const handleConnection = (socket, userUUID) => {
 
   // 스테이지 빈 배열 생성
   createStage(userUUID);
+  createItems(userUUID);
 
   socket.emit('connection', { uuid: userUUID });
 };

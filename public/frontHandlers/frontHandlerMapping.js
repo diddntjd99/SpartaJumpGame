@@ -1,8 +1,13 @@
-import { updateGenerativeItems, updateScore } from './front.handler.js';
+import {
+  plusScoreHandler,
+  updateGenerativeItemsHandler,
+  updateStageHandler,
+} from './front.handler.js';
 
 const frontHandlerMappings = {
-  10: updateScore,
-  101: updateGenerativeItems,
+  10: updateStageHandler,
+  101: updateGenerativeItemsHandler,
+  102: plusScoreHandler,
 };
 
 export default frontHandlerMappings;

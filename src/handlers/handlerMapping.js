@@ -1,13 +1,14 @@
 import { gameEnd, gameStart } from './game.handler.js';
-import { createItemInfo } from './item.handler.js';
-import { getCurrentStageInfo, moveStageHandler } from './stage.handler.js';
+import { acquiredItemHandler, generativeItemsHandler } from './item.handler.js';
+import { getCurrentStageHandler, moveStageHandler } from './stage.handler.js';
 
 const handlerMappings = {
   2: gameStart,
   3: gameEnd,
-  10: getCurrentStageInfo,
+  10: getCurrentStageHandler,
   11: moveStageHandler,
-  101: createItemInfo,
+  101: generativeItemsHandler,
+  102: acquiredItemHandler,
 };
 
 export default handlerMappings;
