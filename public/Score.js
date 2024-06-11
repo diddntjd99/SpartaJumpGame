@@ -3,7 +3,12 @@ import { sendEvent } from './Socket.js';
 class Score {
   score = 0;
   HIGH_SCORE_KEY = 'highScore';
-  stageChange = true;
+  changeStage = false;
+  checkStage = true;
+  currentStageId = 0;
+  nextStageId = 0;
+  scorePerSecond = 0;
+  nextStageScore = 0;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -12,11 +17,25 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.001;
+    if (this.checkStage) {
+      this.checkStage = false;
+      sendEvent(10, {});
+    }
+    this.score += deltaTime * 0.001 * this.scorePerSecond;
     // 점수가 100점 이상이 될 시 서버에 메세지 전송
-    if (Math.floor(this.score) === 10 && this.stageChange) {
-      this.stageChange = false;
-      sendEvent(11, { currentStage: 1000, targetStage: 1001 });
+    if (Math.floor(this.score) === this.nextStageScore && this.changeStage) {
+      this.changeStage = false;
+      sendEvent(11, { currentStage: this.currentStageId, targetStage: this.nextStageId });
+    }
+  }
+
+  setStageInfo(currentStage, nextStage) {
+    this.currentStageId = currentStage.id;
+    this.scorePerSecond = currentStage.scorePerSecond;
+    if (nextStage !== -1) {
+      this.nextStageId = nextStage.id;
+      this.nextStageScore = nextStage.score;
+      this.changeStage = true;
     }
   }
 
@@ -26,6 +45,7 @@ class Score {
 
   reset() {
     this.score = 0;
+    this.checkStage = true;
   }
 
   setHighScore() {

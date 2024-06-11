@@ -22,17 +22,47 @@ export const moveStageHandler = (userId, payload) => {
 
   // 1스테이지 -> 2스테이지로 넘어가는 가정
   // 5 => 임의로 정한 오차 범위
-  if (elapsedTime < 10 || elapsedTime > 10.5) {
-    return { status: 'fail', message: 'Invalid elapsed time' };
-  }
+  // if (elapsedTime < 10 || elapsedTime > 10.5) {
+  //   return { status: 'fail', message: 'Invalid elapsed time' };
+  // }
 
   // targetStage 대한 검증, 게임 asset에 존재 하는지
   const { stages } = getGameAssets();
-  if (!stages.data.some((stage) => stage.id === payload.targetStage)) {
+  const index = stages.data.findIndex((stage) => stage.id === payload.targetStage);
+  if (index === -1) {
     return { status: 'fail', message: 'Target stage not found' };
+  }
+  if (index + 1 >= stages.length) {
+    return { status: 'fail', message: 'Final Stage' };
   }
 
   setStage(userId, payload.targetStage, serverTime);
 
-  return { status: 'success' };
+  return {
+    status: 'success',
+    message: 'Move Stage',
+    handlerId: 110,
+    currentStage: stages.data[index],
+    nextStage: index + 1 < stages.data.length ? stages.data[index + 1] : -1,
+  };
+};
+
+export const getCurrentStageInfo = (userId, payload) => {
+  let currentStages = getStage(userId);
+  currentStages.sort((a, b) => a.id - b.id);
+  const currentStage = currentStages[currentStages.length - 1];
+
+  const { stages } = getGameAssets();
+  const index = stages.data.findIndex((stage) => stage.id === currentStage.id);
+  if (index + 1 >= stages.length) {
+    return { status: 'fail', message: 'Final Stage' };
+  } else {
+    return {
+      ststus: 'success',
+      message: 'Check Current Stage',
+      handlerId: 110,
+      currentStage: stages.data[index],
+      nextStage: stages.data[index + 1],
+    };
+  }
 };

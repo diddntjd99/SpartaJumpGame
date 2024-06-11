@@ -241,6 +241,14 @@ function gameLoop(currentTime) {
   requestAnimationFrame(gameLoop);
 }
 
+export function getScoreVeriable() {
+  if (score) {
+    return score;
+  } else {
+    return;
+  }
+}
+
 // 게임 프레임을 다시 그리는 메서드
 requestAnimationFrame(gameLoop);
 
