@@ -50,7 +50,7 @@ class Score {
     this.checkStage = true;
   }
 
-  setHighScore() {
+  updateHighScore() {
     const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
     if (this.score > highScore) {
       localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score));

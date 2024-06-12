@@ -1,5 +1,5 @@
 import { getGameAssets } from '../init/assets.js';
-import { clearItems } from '../models/item.model.js';
+import { clearItems, getItem } from '../models/item.model.js';
 import { clearStage, getStage, setStage } from '../models/stage.model.js';
 
 export const gameStart = (uuid, payload) => {
@@ -16,25 +16,40 @@ export const gameStart = (uuid, payload) => {
 export const gameEnd = (uuid, payload) => {
   // 클라이언트는 게임 종료 시 타임 스탬프와 총 점수를 표시
   const { timestamp: gameEndTime, score } = payload;
-  const stages = getStage(uuid);
+  const userStages = getStage(uuid);
+  const userItems = getItem(uuid);
 
-  if (!stages.length) {
+  if (!userStages.length) {
     return { status: 'fail', message: 'No stages found for user' };
   }
 
+  const { stages, items } = getGameAssets();
+
   // 각 스테이지의 지속 시간을 계산하여 총 점수 계산
   let totalScore = 0;
-  stages.forEach((stage, index) => {
+  userStages.forEach((stage, index) => {
     let stageEndTime;
-    if (index === stages.length - 1) {
+    if (index === userStages.length - 1) {
       stageEndTime = gameEndTime;
     } else {
-      stageEndTime = stage[index + 1].timestamp;
+      stageEndTime = userStages[index + 1].timestamp;
     }
 
+    const stagesInfoIndex = stages.data.findIndex((element) => element.id === userStages[index].id);
+    const scorePerSecond = stages.data[stagesInfoIndex].scorePerSecond;
+
     const stageDuration = (stageEndTime - stage.timestamp) / 1000;
-    totalScore += stageDuration; // 초당 1점
+    totalScore += stageDuration * scorePerSecond; // 초당 1점
   });
+
+  userItems.forEach((item, index) => {
+    const itemsInfoIndex = items.data.findIndex((element) => element.id === userItems[index].id);
+    const score = items.data[itemsInfoIndex].score;
+
+    totalScore += score;
+  });
+
+  console.log(totalScore);
 
   // 점수와 타임 스탬프 검증
   // 오차범위 5

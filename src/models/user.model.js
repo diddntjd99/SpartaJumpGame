@@ -1,4 +1,5 @@
 const users = [];
+let highScore = 0;
 
 export const addUser = (user) => {
   users.push(user);
@@ -13,4 +14,12 @@ export const removeUser = (socketId) => {
 
 export const getUser = () => {
   return users;
+};
+
+export const getHighScore = () => {
+  return highScore;
+};
+
+export const setHighScore = (score) => {
+  highScore = score;
 };
