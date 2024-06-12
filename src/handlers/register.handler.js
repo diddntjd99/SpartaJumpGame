@@ -14,7 +14,7 @@ const registerHandler = (io) => {
     });
 
     // 접속 해제 시 이벤트
-    socket.on('disconnection', (socket) => {
+    socket.on('disconnect', () => {
       handleDisconnect(socket, userUUID);
     });
   });

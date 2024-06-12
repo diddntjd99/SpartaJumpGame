@@ -9,7 +9,6 @@ const socket = io('http://localhost:3000', {
 
 let userId = null;
 socket.on('response', (data) => {
-  console.log('2. @@@@@@', data);
   handleResponse(data);
 });
 
@@ -19,7 +18,6 @@ socket.on('connection', (data) => {
 });
 
 const sendEvent = (handlerId, payload) => {
-  console.log('1. @@@@@@', handlerId, payload);
   socket.emit('event', {
     userId,
     clientVersion: CLIENT_VERSION,
