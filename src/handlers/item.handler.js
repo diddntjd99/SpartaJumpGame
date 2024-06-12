@@ -23,6 +23,21 @@ export const acquiredItemHandler = (userId, payload) => {
   if (!userGetItem === undefined) {
     return { status: 'fail', message: 'No Items found for user' };
   }
+
+  const serverTime = Date.now();
+
+  if (userGetItem.length !== 0) {
+    userGetItem.sort((a, b) => b.timestamp - a.timestamp);
+    const lastItem = userGetItem[0];
+
+    const elapsedTime = (serverTime - lastItem.timestamp) / 1000;
+
+    // 10초 간격으로 생성되는 아이템이 맞는지 검증
+    if (elapsedTime < 9.5) {
+      return { status: 'fail', message: 'Item Invalid elapsed time' };
+    }
+  }
+
   const { items, itemUnlocks } = getGameAssets();
 
   if (!itemUnlocks.data.some((unlock) => unlock.stage_id === payload.currentStage)) {
@@ -34,7 +49,7 @@ export const acquiredItemHandler = (userId, payload) => {
     return { status: 'fail', message: 'Item not found' };
   }
 
-  setItem(userId, item.id);
+  setItem(userId, item.id, serverTime);
 
   return {
     status: 'success',

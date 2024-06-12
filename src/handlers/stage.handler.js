@@ -16,15 +16,7 @@ export const moveStageHandler = (userId, payload) => {
     return { status: 'fail', message: 'Current Stage mismatch' };
   }
 
-  // 점수 검증
   const serverTime = Date.now();
-  const elapsedTime = (serverTime - currentStage.timestamp) / 1000;
-
-  // 1스테이지 -> 2스테이지로 넘어가는 가정
-  // 5 => 임의로 정한 오차 범위
-  // if (elapsedTime < 10 || elapsedTime > 10.5) {
-  //   return { status: 'fail', message: 'Invalid elapsed time' };
-  // }
 
   // targetStage 대한 검증, 게임 asset에 존재 하는지
   const { stages } = getGameAssets();

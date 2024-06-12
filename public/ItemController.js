@@ -20,7 +20,8 @@ class ItemController {
 
   setNextItemTime() {
     // 아이템 생성 주기, 수정
-    this.nextInterval = this.getRandomNumber(this.INTERVAL_MIN, this.INTERVAL_MAX);
+    // this.nextInterval = this.getRandomNumber(this.INTERVAL_MIN, this.INTERVAL_MAX);
+    this.nextInterval = 10000;
   }
 
   setItemIds(itemIds) {
