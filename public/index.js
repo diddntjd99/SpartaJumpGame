@@ -127,6 +127,7 @@ function setScreen() {
   canvas.width = GAME_WIDTH * scaleRatio;
   canvas.height = GAME_HEIGHT * scaleRatio;
   createSprites();
+  sendEvent(4, { score: score.getHighScore() });
 }
 
 setScreen();
@@ -169,6 +170,7 @@ function reset() {
   gameSpeed = GAME_SPEED_START;
   // 게임시작 핸들러ID 2, payload 에는 게임 시작 시간
   sendEvent(2, { timestamp: Date.now() });
+  sendEvent(10, {});
 }
 
 function setupGameReset() {
@@ -217,7 +219,7 @@ function gameLoop(currentTime) {
   if (!gameover && cactiController.collideWith(player)) {
     gameover = true;
     sendEvent(3, { timestamp: Date.now(), score: score.getScore() });
-    score.updateHighScore();
+    score.checkHighScore();
     setupGameReset();
   }
   const collideWithItem = itemController.collideWith(player);

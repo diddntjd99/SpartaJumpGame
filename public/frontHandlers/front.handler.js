@@ -17,3 +17,8 @@ export const plusScoreHandler = (payload) => {
   const score = getScoreVeriable();
   score.plusScore(payload.item.score);
 };
+
+export const updateHighScore = (payload) => {
+  const score = getScoreVeriable();
+  score.setHighScore(payload.highScore);
+};

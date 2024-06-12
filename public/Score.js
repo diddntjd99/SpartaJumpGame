@@ -2,9 +2,8 @@ import { sendEvent } from './Socket.js';
 
 class Score {
   score = 0;
-  HIGH_SCORE_KEY = 'highScore';
+  highScore = 0;
   changeStage = false;
-  checkStage = true;
   currentStageId = 0;
   nextStageId = 0;
   scorePerSecond = 0;
@@ -17,12 +16,8 @@ class Score {
   }
 
   update(deltaTime) {
-    if (this.checkStage) {
-      this.checkStage = false;
-      sendEvent(10, {});
-    }
     this.score += deltaTime * 0.001 * this.scorePerSecond;
-    // 점수가 100점 이상이 될 시 서버에 메세지 전송
+    // 다음 스테이지의 도달 점수가 되면 서버에 소켓 전송
     if (Math.floor(this.score) >= this.nextStageScore && this.changeStage) {
       this.changeStage = false;
       sendEvent(11, { currentStage: this.currentStageId, targetStage: this.nextStageId });
@@ -41,19 +36,25 @@ class Score {
     sendEvent(101, { currentStageId: this.currentStageId });
   }
 
+  getHighScore() {
+    return this.highScore;
+  }
+
+  setHighScore(score) {
+    this.highScore = Math.floor(score);
+  }
+
   getItem(itemId) {
     sendEvent(102, { itemId, currentStage: this.currentStageId });
   }
 
   reset() {
     this.score = 0;
-    this.checkStage = true;
   }
 
-  updateHighScore() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
-    if (this.score > highScore) {
-      localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score));
+  checkHighScore() {
+    if (this.score > this.highScore) {
+      sendEvent(5, { score: this.score });
     }
   }
 
@@ -66,7 +67,6 @@ class Score {
   }
 
   draw() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
     const y = 20 * this.scaleRatio;
 
     const fontSize = 20 * this.scaleRatio;
@@ -77,7 +77,7 @@ class Score {
     const highScoreX = scoreX - 125 * this.scaleRatio;
 
     const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
-    const highScorePadded = highScore.toString().padStart(6, 0);
+    const highScorePadded = this.highScore.toString().padStart(6, 0);
 
     this.ctx.fillText(scorePadded, scoreX, y);
     this.ctx.fillText(`HI ${highScorePadded}`, highScoreX, y);

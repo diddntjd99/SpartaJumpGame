@@ -1,6 +1,7 @@
 import { getGameAssets } from '../init/assets.js';
 import { clearItems, getItem } from '../models/item.model.js';
 import { clearStage, getStage, setStage } from '../models/stage.model.js';
+import { getHighScore, setHighScore } from '../models/user.model.js';
 
 export const gameStart = (uuid, payload) => {
   const { stages } = getGameAssets();
@@ -49,8 +50,6 @@ export const gameEnd = (uuid, payload) => {
     totalScore += score;
   });
 
-  console.log(totalScore);
-
   // 점수와 타임 스탬프 검증
   // 오차범위 5
   if (Math.abs(score - totalScore) > 5) {
@@ -58,4 +57,38 @@ export const gameEnd = (uuid, payload) => {
   }
 
   return { status: 'success', message: 'Game ended', score };
+};
+
+// 현재 최고점수 읽는 핸들러
+export const getHighScoreHandler = (uuid, payload) => {
+  const highScore = getHighScore();
+
+  if (highScore.score === payload.score) {
+    return { status: 'fail', message: 'Already high score.' };
+  }
+
+  return {
+    status: 'success',
+    message: 'Get high score',
+    handlerId: 5,
+    highScore: highScore.score,
+  };
+};
+
+// 최고점수 갱신 핸들러
+export const setHighScoreHandler = (uuid, payload) => {
+  const highScore = getHighScore();
+  if (highScore.score >= payload.score) {
+    return { status: 'fail', message: 'Not high score.' };
+  }
+
+  setHighScore(uuid, payload.score);
+
+  return {
+    status: 'success',
+    message: 'High score renewing',
+    handlerId: 5,
+    highScore: payload.score,
+    broadcast: true,
+  };
 };

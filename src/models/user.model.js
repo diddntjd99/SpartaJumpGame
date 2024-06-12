@@ -1,5 +1,5 @@
 const users = [];
-let highScore = 0;
+let highScore = { userId: null, score: 0 };
 
 export const addUser = (user) => {
   users.push(user);
@@ -20,6 +20,7 @@ export const getHighScore = () => {
   return highScore;
 };
 
-export const setHighScore = (score) => {
-  highScore = score;
+export const setHighScore = (userId, score) => {
+  highScore.userId = userId;
+  highScore.score = score;
 };
