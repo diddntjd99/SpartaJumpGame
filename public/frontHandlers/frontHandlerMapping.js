@@ -1,12 +1,14 @@
 import {
   plusScoreHandler,
+  recordPlayerHandler,
   updateGenerativeItemsHandler,
-  updateHighScore,
+  updateHighScoreHandler,
   updateStageHandler,
 } from './front.handler.js';
 
 const frontHandlerMappings = {
-  5: updateHighScore,
+  1: recordPlayerHandler,
+  5: updateHighScoreHandler,
   10: updateStageHandler,
   101: updateGenerativeItemsHandler,
   102: plusScoreHandler,

@@ -4,6 +4,7 @@ import { handleResponse } from './frontHandlers/frontHelper.js';
 const socket = io('http://localhost:3000', {
   query: {
     clientVersion: CLIENT_VERSION,
+    userId: 'admin1',
   },
 });
 

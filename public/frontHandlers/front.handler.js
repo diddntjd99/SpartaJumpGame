@@ -18,7 +18,13 @@ export const plusScoreHandler = (payload) => {
   score.plusScore(payload.item.score);
 };
 
-export const updateHighScore = (payload) => {
+// 서버에서 받은 최고 점수를 업데이트하는 핸들러
+export const updateHighScoreHandler = (payload) => {
   const score = getScoreVeriable();
   score.setHighScore(payload.highScore);
+};
+
+// 최고 점수를 기록한 유저만 서버에서 받는 메세지 핸들러
+export const recordPlayerHandler = (payload) => {
+  console.log(payload.message);
 };
